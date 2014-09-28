@@ -2,3 +2,6 @@ miiof_default:
     path: /
     defaults: { _controller: "Miiof\Controller\DefaultController::indexAction" }
 
+miiof_create:
+    path: /
+    defaults: { _controller: "Miiof\Controller\CreateController::indexAction" }
