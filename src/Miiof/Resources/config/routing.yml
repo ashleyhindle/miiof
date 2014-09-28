@@ -3,5 +3,5 @@ miiof_default:
     defaults: { _controller: "Miiof\Controller\DefaultController::indexAction" }
 
 miiof_create:
-    path: /
+    path: /create
     defaults: { _controller: "Miiof\Controller\CreateController::indexAction" }

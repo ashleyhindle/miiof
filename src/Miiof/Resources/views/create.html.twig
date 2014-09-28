@@ -1,5 +1,22 @@
 {% extends "main.html.twig" %}
 
 {% block content %}
-	I'M LIKE WADDUP I GOT A BIG ROCK
+	<div ng-app="miiofApp" ng-controller="CreateCtrl">
+		<p>Angular test {[{'yet' + '!'}]}</p>
+		I'M LIKE WADDUP I GOT A BIG ROCK
+		<form>
+			<input name='invoiceid' placeholder='ID of invoice, get it from last one' value='{[{lastInvoiceId+1}]}'>
+			<input name='from' placeholder='Who whining for money?'>
+			<input name='to' placeholder='Who you want to give you money?'>
+			<hr>
+			<div ng-repeat="baseItem in baseItems">
+				<input ng-model="baseItem.description" name="item{[{ baseItem.invoiceId }]}['description']" placeholder='Description of the thing you want to invoice for'>
+				<input ng-model="baseItem.quantity" name="item{[{ baseItem.invoiceId }]}['quantity']" placeholder='Quantity of the thing you want to invoice for'>
+				<input ng-model="baseItem.price" type='number' name="item{[{ baseItem.invoiceId }]}['price']" placeholder='Price of the thing you want to invoice for'>
+				<span name="item{[{ baseItem.invoiceId }]}['subamount']">&pound; {[{ baseItem.quantity * baseItem.price | number:2}]}</span>
+				<hr>
+			</div>
+			<textarea name='notes'>Bank details go here basically</textarea>
+		</form>
+	</div>
 {% endblock %}
