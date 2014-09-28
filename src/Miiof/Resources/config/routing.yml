@@ -1,0 +1,4 @@
+miiof_default:
+    path: /
+    defaults: { _controller: "Miiof\Controller\DefaultController::indexAction" }
+

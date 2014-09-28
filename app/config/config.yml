@@ -1,0 +1,4 @@
+twig.path: "%root_dir%/src/Miiof/Resources/views"
+routing.resource: "%root_dir%/app/config/routing.yml"
+
+debug: true

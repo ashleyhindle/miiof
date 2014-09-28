@@ -1,0 +1,2 @@
+miiof:
+        resource: "src/Miiof/Resources/config/routing.yml"
