@@ -2,3 +2,4 @@ vendor
 composer.lock
 *.swp
 app/cache
+app/config/dropboxkeys.yml
