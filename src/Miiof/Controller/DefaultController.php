@@ -9,9 +9,4 @@ class DefaultController extends Controller
 	{
 		return $this->render('index.html.twig', []);
 	}
-
-	public function invoiceHtmlAction()
-	{
-		return $this->render('invoice.html.twig', []);
-	}
 }
