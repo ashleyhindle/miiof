@@ -19,16 +19,12 @@
 										<td>{{invoice.invoiceid}}</td>
 								</tr>
 								<tr>
-										<th>Subject</th>
-										<td>{{invoice.subject}}</td>
-								</tr>
-								<tr>
-										<th>Date</th>
+										<th>Issue Date</th>
 									    <td>{{invoice.date}}</td>
 								</tr>
-								<tr class='info'>
-										<th>Amount Due</th>
-										<td>&pound;{{invoice.total|number_format(2)}}</td>
+								<tr>
+										<th>Subject</th>
+										<td>{{invoice.subject}}</td>
 								</tr>
 						</table>
 				</div>
@@ -51,7 +47,7 @@
 				</div>
 
 				<div class='col-xs-4'>
-						<h3>To</h3>
+						<h3>Invoice for</h3>
 						<table class="table table-condensed">
 								<tr>
 										<th>Name</th>
@@ -84,7 +80,7 @@
 												<td><span>{{item.description}}</span></td>
 												<td><span>{{item.quantity}}</span></td>
 												<td><span data-prefix>&pound;</span><span>{{item.price|number_format(2)}}</span></td>
-												<td><span data-prefix>&pound;</span><span>{{(item.price * item.quantity)|number_format(2)}}</span></td>
+												<td><strong><span data-prefix>&pound;</span><span>{{(item.price * item.quantity)|number_format(2)}}</span></strong></td>
 										</tr>
 								{% endfor %}
 				</tbody>
