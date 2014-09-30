@@ -5,6 +5,9 @@ var miiofApp = angular.module('miiofApp', []).config(function($interpolateProvid
 
 miiofApp.controller('CreateCtrl', function ($scope) {
 		$scope.lastInvoiceId = 1000;
+		$scope.invoiceItemsToAdd = 2;
+		$scope.invoiceItemIdToStart = 920000;
+
 		$scope.invoice = {
 				'invoiceId': 1000,
 				'date': moment().format('MMMM Do YYYY'),
@@ -41,7 +44,7 @@ miiofApp.controller('CreateCtrl', function ($scope) {
 								'price': 10.80
 						}
 				],
-				'lastItemId': 92001,
+				'lastItemId': $scope.invoiceItemIdToStart + $scope.invoiceItemsToAdd + 1,
 				'total': (3 * 32) + (82 * 10.80)
 		}
 
@@ -51,10 +54,13 @@ miiofApp.controller('CreateCtrl', function ($scope) {
 
 		$scope.addItem = function() {
 				$scope.invoice['items'].push({
-						'itemId': $scope.lastItemId + 1,
+						'itemId': $scope.invoice.lastItemId,
 						'description': '',
 						'quantity': 0,
 						'price': 0.00
 				});
+				console.log('Added invoice item with itemid: ' + $scope.invoice.lastItemId);
+
+				$scope.invoice.lastItemId++;
 		}
 });
