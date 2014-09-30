@@ -59,17 +59,18 @@
 												<td><span>{{item.description}}</span></td>
 												<td><span>{{item.quantity}}</span></td>
 												<td><span data-prefix>&pound;</span><span>{{item.price|number_format(2)}}</span></td>
-												<td><strong><span data-prefix>&pound;</span><span>{{(item.price * item.quantity)|number_format(2)}}</span></strong></td>
+												<td><span data-prefix>&pound;</span><span>{{(item.price * item.quantity)|number_format(2)}}</span></td>
 										</tr>
 								{% endfor %}
 				</tbody>
+				<tfoot>
+						<tr>
+								<td colspan=2>&nbsp;</td>
+								<td><h4><strong><span>Amount Due</span></strong></h4></td>
+								<td><h4><strong><span data-prefix>&pound;</span><span>{{invoice.total|number_format(2)}}</span></strong></h4></td>
+						</tr>
+				</tfoot>
 		</table>
-						<table class="table table-condensed">
-								<tr class='info'>
-										<td><strong><span>Amount Due</span></strong></td>
-										<td><strong><span data-prefix>&pound;</span><span>{{invoice.total|number_format(2)}}</span></strong></td>
-								</tr>
-						</table>
 				<div class='aside'>
 						<h4><span>Additional Notes</span></h4>
 						<div>

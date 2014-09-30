@@ -92,17 +92,18 @@
 				<td><input ng-model="item.description" name="items[{[{ item.itemId  }]}][description]" placeholder='Description of the thing you want to invoice for'></td>
 				<td><input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}][quantity]" placeholder='Quantity of the thing you want to invoice for'></td>
 				<td><input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}][price]" placeholder='Price of the thing you want to invoice for'></td>
-				<td><span ng-model="item.subtotal"><strong>{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</strong></span></td>
+				<td><span ng-model="item.subtotal">{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</span></td>
 			</tr>
 								</tbody>
-						</table>
-					<a href='' ng-click="addItem()">Add new invoice item</a>
-						<table class="table table-condensed">
-								<tr class='info'>
-										<td><span><strong>Amount Due</strong></span></td>
-										<td><strong><span data-prefix>&pound;</span><span>{[{invoice.total|number:2}]}</span></strong></td>
+						<tfoot>
+								<tr>
+										<td colspan=2>&nbsp;</td>
+										<td><h4><span><strong>Amount Due</strong></span></h4></td>
+										<td><h4><strong><span data-prefix>&pound;</span><span>{[{invoice.total|number:2}]}</span></strong></h4></td>
 								</tr>
+						</tfoot>
 						</table>
+							<a href='' ng-click="addItem()">Add new invoice item</a>
 				</div>
 				<div class='aside'>
 						<h4><span>Additional Notes</span></h4>
