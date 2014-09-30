@@ -4,7 +4,7 @@ var miiofApp = angular.module('miiofApp', []).config(function($interpolateProvid
 );
 
 miiofApp.controller('CreateCtrl', function ($scope) {
-		$scope.lastInvoiceId = 1000;
+		$scope.lastInvoiceId = 999;
 		$scope.invoiceItemsToAdd = 2;
 		$scope.invoiceItemIdToStart = 920000;
 
@@ -47,20 +47,52 @@ miiofApp.controller('CreateCtrl', function ($scope) {
 				'lastItemId': $scope.invoiceItemIdToStart + $scope.invoiceItemsToAdd + 1,
 				'total': (3 * 32) + (82 * 10.80)
 		}
+		
+		$scope.$watch('invoice.items', function () {
+				var total = 0;
+				var item = null;
+				for(key in $scope.invoice.items) {
+						item = $scope.invoice.items[key];
+						total += item['price'] * item['quantity'];
+				}
+				$scope.invoice.total = total;
+		},
+		true); // Deep watch
+
 
 		$scope.invoices = {
 		
+		};
+
+		$scope.removeItem = function(item) {
+				console.log('Removing invoice item with itemid: ' + item);
+				var index = $scope.invoice['items'].indexOf(item)
+				$scope.invoice['items'].splice(index, 1); 
 		};
 
 		$scope.addItem = function() {
 				$scope.invoice['items'].push({
 						'itemId': $scope.invoice.lastItemId,
 						'description': '',
-						'quantity': 0,
+						'quantity': 1,
 						'price': 0.00
 				});
+
 				console.log('Added invoice item with itemid: ' + $scope.invoice.lastItemId);
 
 				$scope.invoice.lastItemId++;
+		};
+
+
+		/*
+		$scope.generateInvoice = function() {
+				$http.post('/generate', $scope.invoice{method: 'POST', url: '/generate'}).
+				success(function(data, status, headers, config) {
+						alert('It did work, success or something: ' + data);
+				}).
+				error(function(data, status, headers, config) {
+						alert('Dint work, error or something');
+				});
 		}
+		*/
 });

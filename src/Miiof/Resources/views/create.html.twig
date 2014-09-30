@@ -2,22 +2,24 @@
 
 {% block content %}
 	<div ng-app="miiofApp" ng-controller="CreateCtrl">
-		<form>
-			<input name='invoiceid' placeholder='ID of invoice, get it from last one' value='{[{invoice.invoiceId}]}'>
-			<input name='date' placeholder='Date, pickable by selector of some sort?' value='{[{invoice.date}]}'>
-			<input name='from' placeholder='From' value='{[{invoice.from.name}]}'>
-			<input name='to' placeholder='To' value='{[{invoice.to.name}]}'>
+		<form method='POST' action='/generate'>
+			<input name='invoiceid' placeholder='ID of invoice, get it from last one' ng-model='invoice.invoiceId'>
+			<input name='date' placeholder='Date, pickable by selector of some sort?' ng-model='invoice.date'>
+			<input name='subject' placeholder='Subject, why are you sending the invoice?' ng-model='invoice.subject'>
+			<input name='from' placeholder='From' ng-model='invoice.from.name'>
+			<input name='to' placeholder='To' ng-model='invoice.to.name'>
 			<hr>
 			<div ng-repeat="item in invoice.items">
-				<input ng-model="item.description" name="item{[{ item.invoiceId }]}['description']" placeholder='Description of the thing you want to invoice for'>
-				<input ng-model="item.quantity" name="item{[{ item.invoiceId }]}['quantity']" placeholder='Quantity of the thing you want to invoice for'>
-				<input ng-model="item.price" type='number' name="item{[{ item.invoiceId }]}['price']" placeholder='Price of the thing you want to invoice for'>
-				<span name="item{[{ item.invoiceId }]}['subamount']">{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</span>
-				<hr>
+				<a href='' ng-click="removeItem(item)">Remove</a>
+				<input ng-model="item.description" name="items[{[{ item.itemId  }]}]['description']" placeholder='Description of the thing you want to invoice for'>
+				<input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}]['quantity']" placeholder='Quantity of the thing you want to invoice for'>
+				<input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}]['price']" placeholder='Price of the thing you want to invoice for'>
+				<span ng-model="item.subtotal">{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</span>
 			</div>
 			<a href='' ng-click="addItem()">Add new invoice item</a>
-			<span name='total' id='total'>{[{invoice.currency.symbol + invoice.total}]}</span>
+			<span name='total' id='total'>{[{invoice.currency.symbol}]} {[{invoice.total | number:2}]}</span>
 			<textarea name='notes'>{[{invoice.notes}]}</textarea>
+			<input type='submit' name='submit' value='GENERATE'>
 		</form>
 	</div>
 {% endblock %}

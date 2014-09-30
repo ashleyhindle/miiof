@@ -3,6 +3,7 @@ namespace Miiof\Controller;
 
 use Flint\Controller\Controller;
 use \Dropbox as dbx;
+use Symfony\Component\HttpFoundation\Request;
 
 class CreateController extends Controller
 {
@@ -13,7 +14,14 @@ class CreateController extends Controller
 			$this->pimple['predis']->hmset('invoice:18', ['invoiceid' => 1000, 'subject' => 'For Tits', 'from' => 'Batman', 'to' => 'Ironman']);
 		}
 
-		//$this->pimple['dropbox.client']->uploadFileFromString('/myInvoiceTest1.txt', dbx\WriteMode::add(), 'Not really, just testing');
 		return $this->render('create.html.twig');
+	}
+
+	public function generateAction(Request $request)
+	{
+			echo '<pre>';
+			print_r($_POST);
+			var_dump($request->request->get('invoiceid'));
+			return true;
 	}
 }
