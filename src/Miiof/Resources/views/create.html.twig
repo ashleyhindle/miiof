@@ -99,13 +99,13 @@
 					<a href='' ng-click="addItem()">Add new invoice item</a>
 						<table class="table table-condensed">
 								<tr class='info'>
-										<td><span><strong>Total</strong></span></td>
+										<td><span><strong>Amount Due</strong></span></td>
 										<td><strong><span data-prefix>&pound;</span><span>{[{invoice.total|number:2}]}</span></strong></td>
 								</tr>
 						</table>
 				</div>
 				<div class='aside'>
-						<h1><span>Additional Notes</span></h1>
+						<h4><span>Additional Notes</span></h4>
 						<div>
 								<textarea rows="3" class='form-control' name='notes'>{[{invoice.notes}]}</textarea>
 						</div>
