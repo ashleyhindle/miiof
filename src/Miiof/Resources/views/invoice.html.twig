@@ -1,3 +1,72 @@
+<!doctype html>
 <html>
-The invoice goes here
+		<head>
+				<meta charset="utf-8">
+				<title>Invoice</title>
+				<link rel="stylesheet" href="http://www.jonathantneal.com/examples/invoice/style.css">
+				<link rel="license" href="http://www.opensource.org/licenses/mit-license/">
+		</head>
+		<body>
+				<header>
+						<h1>Invoice</h1>
+						<address>
+								<p>Jonathan Neal</p>
+								<p>101 E. Chapman Ave<br>Orange, CA 92866</p>
+								<p>(800) 555-1234</p>
+						</address>
+					<!--	<span><img alt="" src="logo.png"><input type="file" accept="image/*"></span> -->
+				</header>
+				<article>
+						<h1>Recipient</h1>
+						<address>
+								<p>Some Company<br>c/o Some Guy</p>
+						</address>
+						<table class="meta">
+								<tr>
+										<th><span>Invoice #</span></th>
+										<td><span>{{invoice.invoiceid}}</span></td>
+								</tr>
+								<tr>
+										<th><span>Date</span></th>
+										<td><span>{{invoice.date}}</span></td>
+								</tr>
+								<tr>
+										<th><span>Amount Due</span></th>
+										<td><span id="prefix">&pound;<span><span>{{invoice.total|number_format(2)}}</span></td>
+								</tr>
+						</table>
+						<table class="inventory">
+								<thead>
+										<tr>
+												<th><span>Description</span></th>
+												<th><span>Quantity</span></th>
+												<th><span>Price</span></th>
+												<th><span>Subtotal</span></th>
+										</tr>
+								</thead>
+								<tbody>
+								{% for item in invoice.items %}
+										<tr>
+												<td><span>{{item.description}}</span></td>
+												<td><span>{{item.quantity}}</span></td>
+												<td><span data-prefix>&pound;</span><span>{{item.price|number_format(2)}}</span></td>
+												<td><span data-prefix>&pound;</span><span>{{(item.price * item.quantity)|number_format(2)}}</span></td>
+										</tr>
+								{% endfor %}
+								</tbody>
+						</table>
+						<table class="balance">
+								<tr>
+										<th><span>Total</span></th>
+										<td><span data-prefix>&pound;</span><span>{{invoice.total|number_format(2)}}</span></td>
+								</tr>
+						</table>
+				</article>
+				<aside>
+						<h1><span>Additional Notes</span></h1>
+						<div>
+								<p>{{invoice.notes}}</p>
+						</div>
+				</aside>
+		</body>
 </html>

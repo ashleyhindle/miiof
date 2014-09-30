@@ -7,21 +7,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateController extends Controller
 {
-	public function indexAction()
-	{
-		if(null == $this->pimple['predis']->get('test')) {
-			$this->pimple['predis']->set('test', 'uwotm8');
-			$this->pimple['predis']->hmset('invoice:18', ['invoiceid' => 1000, 'subject' => 'For Tits', 'from' => 'Batman', 'to' => 'Ironman']);
+		public function indexAction()
+		{
+				if(null == $this->pimple['predis']->get('test')) {
+						$this->pimple['predis']->set('test', 'uwotm8');
+						$this->pimple['predis']->hmset('invoice:18', ['invoiceid' => 1000, 'subject' => 'For Tits', 'from' => 'Batman', 'to' => 'Ironman']);
+				}
+
+				return $this->render('create.html.twig');
 		}
 
-		return $this->render('create.html.twig');
-	}
-
-	public function generateAction(Request $request)
-	{
-			echo '<pre>';
-			print_r($_POST);
-			var_dump($request->request->get('invoiceid'));
-			return true;
-	}
+		public function generateAction(Request $request)
+		{
+				return $this->render('invoice.html.twig', [
+						'invoice' => $_POST
+				]);
+		}
 }

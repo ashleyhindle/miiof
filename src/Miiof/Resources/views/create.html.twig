@@ -8,12 +8,13 @@
 			<input name='subject' placeholder='Subject, why are you sending the invoice?' ng-model='invoice.subject'>
 			<input name='from' placeholder='From' ng-model='invoice.from.name'>
 			<input name='to' placeholder='To' ng-model='invoice.to.name'>
+		    <input name='total' type='hidden' ng-value='invoice.total'>
 			<hr>
 			<div ng-repeat="item in invoice.items">
 				<a href='' ng-click="removeItem(item)">Remove</a>
-				<input ng-model="item.description" name="items[{[{ item.itemId  }]}]['description']" placeholder='Description of the thing you want to invoice for'>
-				<input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}]['quantity']" placeholder='Quantity of the thing you want to invoice for'>
-				<input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}]['price']" placeholder='Price of the thing you want to invoice for'>
+				<input ng-model="item.description" name="items[{[{ item.itemId  }]}][description]" placeholder='Description of the thing you want to invoice for'>
+				<input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}][quantity]" placeholder='Quantity of the thing you want to invoice for'>
+				<input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}][price]" placeholder='Price of the thing you want to invoice for'>
 				<span ng-model="item.subtotal">{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</span>
 			</div>
 			<a href='' ng-click="addItem()">Add new invoice item</a>
