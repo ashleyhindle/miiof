@@ -3,24 +3,25 @@
 		<head>
 				<meta charset="utf-8">
 				<title>Invoice</title>
-				<link rel="stylesheet" href="http://www.jonathantneal.com/examples/invoice/style.css">
+				<link rel="stylesheet" href="http://{{ app.request.host }}/assets/css/invoice.css">
 				<link rel="license" href="http://www.opensource.org/licenses/mit-license/">
 		</head>
 		<body>
-				<header>
+				<div id='header'>
 						<h1>Invoice</h1>
-						<address>
-								<p>Jonathan Neal</p>
-								<p>101 E. Chapman Ave<br>Orange, CA 92866</p>
-								<p>(800) 555-1234</p>
-						</address>
+						<div class='address'>
+								<p>{{invoice.from.name}}</p>
+								<p>{{invoice.from.address}}</p>
+								<p>{{invoice.from.phone}}</p>
+						</div>
 					<!--	<span><img alt="" src="logo.png"><input type="file" accept="image/*"></span> -->
-				</header>
-				<article>
+				</div>
+				<div class='article'>
 						<h1>Recipient</h1>
-						<address>
-								<p>Some Company<br>c/o Some Guy</p>
-						</address>
+						<div>
+								<div style='width:300px;'>{{invoice.to.name}}</div>
+								<div style='width:200px;font-size:14px;'>{{invoice.to.address|replace({',': ",\n"})}}</div>
+						</div>
 						<table class="meta">
 								<tr>
 										<th><span>Invoice #</span></th>
@@ -61,12 +62,12 @@
 										<td><span data-prefix>&pound;</span><span>{{invoice.total|number_format(2)}}</span></td>
 								</tr>
 						</table>
-				</article>
-				<aside>
+				</div>
+				<div class='aside'>
 						<h1><span>Additional Notes</span></h1>
 						<div>
 								<p>{{invoice.notes}}</p>
 						</div>
-				</aside>
+				</div>
 		</body>
 </html>

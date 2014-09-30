@@ -7,8 +7,10 @@
 			<input name='date' placeholder='Date, pickable by selector of some sort?' ng-model='invoice.date'>
 			<input name='subject' placeholder='Subject, why are you sending the invoice?' ng-model='invoice.subject'>
 			<input name='from[name]' placeholder='From' ng-model='invoice.from.name'>
+			<input name='from[phone]' placeholder='Phone' ng-model='invoice.from.phone'>
 			<textarea name='from[address]' ng-model='invoice.from.address'></textarea>
 			<input name='to[name]' placeholder='To' ng-model='invoice.to.name'>
+			<input name='to[phone]' placeholder='Phone' ng-model='invoice.to.phone'>
 			<textarea name='to[address]' ng-model='invoice.to.address'></textarea>
 		    <input name='total' type='hidden' ng-value='invoice.total'>
 			<hr>
