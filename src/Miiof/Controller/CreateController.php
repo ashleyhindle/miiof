@@ -5,6 +5,7 @@ use Flint\Controller\Controller;
 use \Dropbox as dbx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class CreateController extends Controller
 {
@@ -24,26 +25,30 @@ class CreateController extends Controller
 						'invoice' => $_POST
 				]);
 
-				$baseDir = '/tmp/' . substr(md5(rand()), 0, 14) . '/';
+				$invoiceKey = substr(md5(rand()), 0, 14);
+
+				$baseDir = '/tmp/' . $invoiceKey . '/';
 				mkdir($baseDir);
 
-				$tmpFileHtml = $baseDir . '/miiof_HTMLinvoice_' . substr(md5(rand()), 0, 14) . '.html';
+				$tmpFileHtml = $baseDir . 'INVOICE_' . $invoiceKey . '_' . $_POST['invoiceid'] . '.html';
+				$tmpFilePdf = $baseDir . 'INVOICE_' . $invoiceKey . '_' . $_POST['invoiceid'] . '.pdf';
+
 				touch($tmpFileHtml);
 				chmod($tmpFileHtml, 0777);
+
+				touch($tmpFilePdf);
+				chmod($tmpFilePdf, 0777);
 
 				file_put_contents(
 						$tmpFileHtml,
 						$invoiceHtml
 				);
 
-				$tmpFilePdf = $baseDir . '/Miiof_Invoice_' . $_POST['invoiceid'] . '_' . substr(md5(rand()), 0, 7) . '.pdf';
-				touch($tmpFilePdf);
-				chmod($tmpFilePdf, 0777);
-
 				$command = "/usr/local/bin/wkhtmltopdf " . escapeshellarg($tmpFileHtml) . " " . escapeshellarg($tmpFilePdf);
 				shell_exec($command);
 
 				$response = new Response();
+				$response->headers->setCookie(new Cookie('lastInvoiceKey', $invoiceKey));
 				$response->headers->set('Cache-Control', 'private');
 				$response->headers->set('Content-type', mime_content_type($tmpFilePdf));
 				//$response->headers->set('Content-Disposition', 'attachment; filename="' . basename($tmpFilePdf) . '";');
