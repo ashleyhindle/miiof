@@ -3,49 +3,81 @@
 		<head>
 				<meta charset="utf-8">
 				<title>Invoice</title>
-				<link rel="stylesheet" href="http://{{ app.request.host }}/assets/css/invoice.css">
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 				<link rel="license" href="http://www.opensource.org/licenses/mit-license/">
 		</head>
 		<body>
-				<div id='header'>
-						<h1>Invoice</h1>
-						<div class='address'>
-								<p>{{invoice.from.name}}</p>
-								<p>{{invoice.from.address}}</p>
-								<p>{{invoice.from.phone}}</p>
-						</div>
-					<!--	<span><img alt="" src="logo.png"><input type="file" accept="image/*"></span> -->
-				</div>
-				<div class='article'>
-						<h1>Recipient</h1>
-						<div>
-								<div style='width:300px;'>{{invoice.to.name}}</div>
-								<div style='width:200px;font-size:14px;'>{{invoice.to.address|replace({',': ",\n"})}}</div>
-						</div>
-						<table class="meta">
+		<div class='container' style='width:1100px;'>
+		<div class='row'>
+				<div class='col-xs-4'>
+						<h3>Details</h3>
+						<table class="table table-condensed">
 								<tr>
-										<th><span>Invoice #</span></th>
-										<td><span>{{invoice.invoiceid}}</span></td>
+										<th>Invoice #</th>
+										<td>{{invoice.invoiceid}}</td>
 								</tr>
 								<tr>
-										<th><span>Date</span></th>
-										<td><span>{{invoice.date}}</span></td>
+										<th>Subject</th>
+										<td>{{invoice.subject}}</td>
 								</tr>
 								<tr>
-										<th><span>Amount Due</span></th>
-										<td><span id="prefix">&pound;<span><span>{{invoice.total|number_format(2)}}</span></td>
+										<th>Date</th>
+									    <td>{{invoice.date}}</td>
+								</tr>
+								<tr class='info'>
+										<th>Amount Due</th>
+										<td>&pound;{{invoice.total|number_format(2)}}</td>
 								</tr>
 						</table>
-						<table class="inventory">
-								<thead>
-										<tr>
-												<th><span>Description</span></th>
-												<th><span>Quantity</span></th>
-												<th><span>Price</span></th>
-												<th><span>Subtotal</span></th>
-										</tr>
-								</thead>
-								<tbody>
+				</div>
+				<div class='col-xs-4'>
+						<h3>From</h3>
+						<table class="table table-condensed">
+								<tr>
+										<th>Name</th>
+										<td>{{invoice.from.name}}</td>
+								</tr>
+								<tr>
+										<th>Phone</th>
+										<td>{{invoice.from.phone}}</td>
+								</tr>
+								<tr>
+										<th>Address</th>
+									    <td>{{invoice.from.address}}</td>
+								</tr>
+						</table>
+				</div>
+
+				<div class='col-xs-4'>
+						<h3>To</h3>
+						<table class="table table-condensed">
+								<tr>
+										<th>Name</th>
+										<td>{{invoice.to.name}}</td>
+								</tr>
+								<tr>
+										<th>Phone</th>
+										<td>{{invoice.to.phone}}</td>
+								</tr>
+								<tr>
+										<th>Address</th>
+									    <td>{{invoice.to.address}}</td>
+								</tr>
+						</table>
+				</div>
+		</div>
+
+		<table class="table table-striped table-hover table-condensed">
+				<thead>
+						<tr>
+								<th>Description</th>
+								<th>Quantity</th>
+								<th>Unit Price</th>
+								<th>Subtotal</th>
+						</tr>
+				</thead>
+				<tbody>
 								{% for item in invoice.items %}
 										<tr>
 												<td><span>{{item.description}}</span></td>
@@ -54,20 +86,20 @@
 												<td><span data-prefix>&pound;</span><span>{{(item.price * item.quantity)|number_format(2)}}</span></td>
 										</tr>
 								{% endfor %}
-								</tbody>
-						</table>
-						<table class="balance">
-								<tr>
-										<th><span>Total</span></th>
+				</tbody>
+		</table>
+						<table class="table table-condensed">
+								<tr class='info'>
+										<td><span>Total</span></td>
 										<td><span data-prefix>&pound;</span><span>{{invoice.total|number_format(2)}}</span></td>
 								</tr>
 						</table>
-				</div>
 				<div class='aside'>
 						<h1><span>Additional Notes</span></h1>
 						<div>
-								<p>{{invoice.notes}}</p>
+								<textarea rows="3" class='form-control' name='notes'>{{invoice.notes}}</textarea>
 						</div>
 				</div>
+		</div>
 		</body>
 </html>
