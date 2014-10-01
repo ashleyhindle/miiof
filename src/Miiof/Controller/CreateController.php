@@ -6,6 +6,7 @@ use \Dropbox as dbx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
+use Silex\Application;
 
 class CreateController extends Controller
 {
@@ -19,7 +20,7 @@ class CreateController extends Controller
 				return $this->render('create.html.twig');
 		}
 
-		public function generateAction(Request $request)
+		public function generateAction(Request $request, Application $app)
 		{
 				$invoiceHtml = $this->render('invoice.html.twig', [
 						'invoice' => $_POST
@@ -30,8 +31,8 @@ class CreateController extends Controller
 				$baseDir = '/tmp/' . $invoiceKey . '/';
 				mkdir($baseDir);
 
-				$tmpFileHtml = $baseDir . 'INVOICE_' . $invoiceKey . '_' . $_POST['invoiceid'] . '.html';
-				$tmpFilePdf = $baseDir . 'INVOICE_' . $invoiceKey . '_' . $_POST['invoiceid'] . '.pdf';
+				$tmpFileHtml = $baseDir . 'INVOICE_' . $invoiceKey . '.html';
+				$tmpFilePdf = $baseDir . 'INVOICE_' . $invoiceKey . '.pdf';
 
 				touch($tmpFileHtml);
 				chmod($tmpFileHtml, 0777);
@@ -47,18 +48,6 @@ class CreateController extends Controller
 				$command = "/usr/local/bin/wkhtmltopdf " . escapeshellarg($tmpFileHtml) . " " . escapeshellarg($tmpFilePdf);
 				shell_exec($command);
 
-				$response = new Response();
-				$response->headers->setCookie(new Cookie('lastInvoiceKey', $invoiceKey));
-				$response->headers->set('Cache-Control', 'private');
-				$response->headers->set('Content-type', mime_content_type($tmpFilePdf));
-
-				$response->headers->set('Content-Disposition', 'filename="' . basename($tmpFilePdf) . '";');
-				//$response->headers->set('Content-Disposition', 'attachment; filename="' . basename($tmpFilePdf) . '";');
-				$response->headers->set('Content-length', filesize($tmpFilePdf));
-
-				$response->sendHeaders();
-				$response->setContent(readfile($tmpFilePdf));
-
-				return $response->send();
+				return $app->redirect('/save/' . urlencode($invoiceKey));
 		}
 }

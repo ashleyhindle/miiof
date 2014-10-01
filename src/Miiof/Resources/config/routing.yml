@@ -16,6 +16,11 @@ miiof_generateGET:
     defaults: { _controller: "Miiof\Controller\CreateController::indexAction" }
     methods:  [GET]
 
+miiof_save:
+    path: /save/{invoiceKey}
+    defaults: { _controller: "Miiof\Controller\SaveController::indexAction" }
+    methods:  [GET]
+
 miiof_invoice:
     path: /invoice/{invoiceKey}
-    defaults: { _controller: "Miiof\Contrller\DefaultController::invoiceAction" }
+    defaults: { _controller: "Miiof\Controller\DefaultController::invoiceAction" }

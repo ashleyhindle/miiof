@@ -1,0 +1,6 @@
+{% extends "main.html.twig" %}
+
+{% block content %}
+<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8t9mambm9npgo3j"></script>
+<a href='http://{{app.request.host}}/invoice/{{invoiceKey}}'>Download</a> &nbsp; <a href="http://{{app.request.host}}/invoice/{{invoiceKey}}" class="dropbox-saver" data-filename="INVOICE_{{invoiceKey}}.pdf"></a>
+{% endblock %}
