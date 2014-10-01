@@ -25,6 +25,10 @@ miiof_invoice:
     path: /invoice/{invoiceKey}/{download}
     defaults: { _controller: "Miiof\Controller\DefaultController::invoiceAction", download: "view"}
 
+miiof_dropbox_save:
+    path: /dropbox/save/{invoiceKey}
+    defaults: { _controller: "Miiof\Controller\DropboxController::saveAction" }
+
 miiof_dropbox_start:
     path: /dropbox/start
     defaults: { _controller: "Miiof\Controller\DropboxController::startAction" }

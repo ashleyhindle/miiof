@@ -31,7 +31,7 @@ miiofApp.controller('CreateCtrl', function ($scope, $http) {
 		$scope.invoice = {
 				'invoiceId': $scope.lastInvoiceId + 1,
 				'date': moment().format('MMMM Do YYYY'),
-				'notes': "Bank details go here, maybe payment terms",
+				'notes': "Please send payment within 14 days via bank transfer to the details below:\nSmellynose Ltd\nAccount number: xxxxxxxx\nSort Code: xxxxxx",
 				'currency': {
 						'code': 'GBP',
 						'html': '&pound;',

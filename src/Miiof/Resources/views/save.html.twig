@@ -5,7 +5,13 @@
 <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8t9mambm9npgo3j"></script>
 <a class='btn btn-primary' href='https://{{app.request.host}}/invoice/{{invoiceKey}}/download'>Download</a> &nbsp;
 <a class='btn btn-success' href='/create'>Create Invoice</a> &nbsp;
-<a href="https://{{app.request.host}}/invoice/{{invoiceKey}}" class="dropbox-saver" data-filename="Miiof_Invoice_{{invoiceKey}}.pdf"></a>
+
+{% if loggedInToDropbox %}
+		<a class='btn btn-info' href="/dropbox/save/{{invoiceKey}}">Save to Dropbox</a>
+{% else %}
+		<a href="https://{{app.request.host}}/invoice/{{invoiceKey}}" class="dropbox-saver" data-filename="Miiof_Invoice_{{invoiceKey}}.pdf"></a>
+{% endif %}
+
 <br>
 <br>
 <iframe src='/invoice/{{invoiceKey}}' frameborder=0 width="980px" height="500px" allowtransparency="true"></iframe>

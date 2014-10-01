@@ -21,6 +21,11 @@
 		</nav>
 
 		<div class='container'>
+				{% if app.session.get('flashbag')|length > 0 %}
+						{% for bag in app.session.get('flashbag') %}
+								<p class="bg-{{bag.type}}">{{bag.message}}</p>
+						{% endfor %}
+				{% endif %}
 				{% block content %}{% endblock %}
 		</div>
 	</body>
