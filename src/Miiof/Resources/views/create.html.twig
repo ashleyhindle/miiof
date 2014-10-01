@@ -1,12 +1,6 @@
 {% extends "main.html.twig" %}
 
 {% block content %}
-{*
-		{% for invoice in invoices %}
-				{{invoice.invoiceid}}<hr>
-		{% endfor %}
-*}
-
 	<div ng-app="miiofApp" ng-controller="CreateCtrl" class='container-fluid' ng-init="lastInvoiceId={{lastInvoiceId}}; invoice.invoiceId = {{lastInvoiceId + 1}};" style='width:1100px;'>
 		<form method='POST' action='/generate' class='form'>
 			<input type='submit' class='btn btn-primary' name='submit' value='GENERATE'>
