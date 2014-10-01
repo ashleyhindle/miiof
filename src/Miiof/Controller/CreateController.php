@@ -13,16 +13,22 @@ class CreateController extends Controller
 		public function indexAction(Application $app)
 		{
 				$invoices = [];
+				$lastInvoiceId = 999;
+
 				if($app['session']->get('dropbox') !== null) {
 						$members = $app['predis']->smembers('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId']);
 						if(!empty($members)) {
 								foreach($members as $invoiceKey) {
 										$invoices[$invoiceKey] = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
+										if($invoices[$invoiceKey]['invoiceid'] > $lastInvoiceId) {
+												$lastInvoiceId = $invoices[$invoiceKey]['invoiceid'];
+										}	
 								}
 						}
 				}
 				return $this->render('create.html.twig', [
-						'invoices' => $invoices
+						'invoices' => $invoices,
+						'lastInvoiceId' => $lastInvoiceId
 				]);
 		}
 

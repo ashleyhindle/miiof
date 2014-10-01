@@ -2,5 +2,7 @@
 
 {% block content %}
 <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8t9mambm9npgo3j"></script>
-<a href='https://{{app.request.host}}/invoice/{{invoiceKey}}'>Download</a> &nbsp; <a href="https://{{app.request.host}}/invoice/{{invoiceKey}}" class="dropbox-saver" data-filename="Miiof_Invoice_{{invoiceKey}}.pdf"></a>
+<a class='btn btn-primary' href='https://{{app.request.host}}/invoice/{{invoiceKey}}'>Download</a> &nbsp;
+<a class='btn btn-success' href='/create'>Create Invoice</a> &nbsp;
+<a href="https://{{app.request.host}}/invoice/{{invoiceKey}}" class="dropbox-saver" data-filename="Miiof_Invoice_{{invoiceKey}}.pdf"></a>
 {% endblock %}

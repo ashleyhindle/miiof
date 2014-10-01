@@ -9,7 +9,7 @@ miiofApp.controller('CreateCtrl', function ($scope) {
 		$scope.invoiceItemIdToStart = 920000;
 
 		$scope.invoice = {
-				'invoiceId': 1000,
+				'invoiceId': $scope.lastInvoiceId + 1,
 				'date': moment().format('MMMM Do YYYY'),
 				'notes': "Bank details go here, maybe payment terms",
 				'currency': {
