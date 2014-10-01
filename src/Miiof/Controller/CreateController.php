@@ -10,14 +10,20 @@ use Silex\Application;
 
 class CreateController extends Controller
 {
-		public function indexAction()
+		public function indexAction(Application $app)
 		{
-				if(null == $this->pimple['predis']->get('test')) {
-						$this->pimple['predis']->set('test', 'uwotm8');
-						$this->pimple['predis']->hmset('invoice:18', ['invoiceid' => 1000, 'subject' => 'For Tits', 'from' => 'Batman', 'to' => 'Ironman']);
+				$invoices = [];
+				if($app['session']->get('dropbox') !== null) {
+						$members = $app['predis']->smembers('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId']);
+						if(!empty($members)) {
+								foreach($members as $invoiceKey) {
+										$invoices[$invoiceKey] = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
+								}
+						}
 				}
-
-				return $this->render('create.html.twig');
+				return $this->render('create.html.twig', [
+						'invoices' => $invoices
+				]);
 		}
 
 		public function generateAction(Request $request, Application $app)
@@ -47,6 +53,11 @@ class CreateController extends Controller
 
 				$command = "/usr/local/bin/wkhtmltopdf " . escapeshellarg($tmpFileHtml) . " " . escapeshellarg($tmpFilePdf);
 				shell_exec($command);
+		
+				$app['predis']->set('invoice:'.$invoiceKey, json_encode($_POST));
+				if($app['session']->get('dropbox') !== null) {
+						$app['predis']->sadd('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], [$invoiceKey]);
+				}
 
 				return $app->redirect('/save/' . urlencode($invoiceKey));
 		}

@@ -1,7 +1,6 @@
 <?php
 namespace Miiof\Controller;
 
-use \Dropbox as dbx;
 use Flint\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +10,14 @@ class DefaultController extends Controller
 {
 	public function indexAction(Application $app)
 	{
-		return $this->render('index.html.twig', []);
+		$loggedInToDropbox = (!empty($app['session']->get('dropbox')));
+		if($loggedInToDropbox) {
+				return $app->redirect('/create');
+		}
+
+		return $this->render('index.html.twig', [
+				'loggedInToDropbox' => $loggedInToDropbox
+		]);
 	}
 
     public function invoiceAction(Request $request)
