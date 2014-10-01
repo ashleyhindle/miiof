@@ -45,9 +45,9 @@ class DropboxController extends Controller
 		fclose($fp);
 
 		if(is_array($md1) && $md1['revision']) {
-				$app['session']->set('flashbag', ['type'=>'success', 'message'=>'Successfully uploaded INVOICE_'.$invoiceKey.'.pdf']);
+				$app['session']->getFlashBag()->add('success', "Successfully uploaded INVOICE_{$invoiceKey}.pdf");
 		} else {
-				$app['session']->set('flashbag', ['type'=>'warning', 'message'=>'Failed to upload INVOICE_'.$invoiceKey.'.pdf - I do\'nt know why right now, but I am very sorry! :-(']);
+				$app['session']->getFlashBag()->add('warning', "Failed to upload INVOICE_{$invoiceKey}.pdf - I don't know why right now, but I am very sorry! :-(");
 		}
 		return $app->redirect('/save/'.$invoiceKey);
 	}
