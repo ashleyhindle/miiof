@@ -1,13 +1,15 @@
 <?php
 namespace Miiof\Controller;
 
+use \Dropbox as dbx;
 use Flint\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Silex\Application;
 
 class DefaultController extends Controller
 {
-	public function indexAction()
+	public function indexAction(Application $app)
 	{
 		return $this->render('index.html.twig', []);
 	}
@@ -16,7 +18,7 @@ class DefaultController extends Controller
     {
 		$invoiceKey = $request->get('invoiceKey');
 		if(empty($invoiceKey)) {
-				die("Sorry, invalid key, and I don't have time at the minute to add proper error messags because it's past midnight and my laptop is burning my legs");
+				die("Sorry, invalid key, and I don't have time at the minute to add proper error messages because it's past midnight and my laptop is burning my legs");
 		}
 
 		$baseDir = '/tmp/' . $invoiceKey . '/';
