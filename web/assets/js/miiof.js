@@ -82,17 +82,4 @@ miiofApp.controller('CreateCtrl', function ($scope) {
 
 				$scope.invoice.lastItemId++;
 		};
-
-
-		/*
-		$scope.generateInvoice = function() {
-				$http.post('/generate', $scope.invoice{method: 'POST', url: '/generate'}).
-				success(function(data, status, headers, config) {
-						alert('It did work, success or something: ' + data);
-				}).
-				error(function(data, status, headers, config) {
-						alert('Dint work, error or something');
-				});
-		}
-		*/
 });
