@@ -20,21 +20,27 @@ class CreateController extends Controller
 				if($app['session']->get('dropbox') == null) {
 						return $app->json([]);
 				}
-				$duplicate = $request->get('duplicateInvoiceKey');
 
+				$duplicate = $request->get('duplicateInvoiceKey');
+				$duplicateInvoice = [];
 				$invoices = [];
 
 				$members = $app['predis']->lrange('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], 0, 10);
 				if(!empty($members)) {
 						foreach($members as $invoiceKey) {
-								$invoices[$invoiceKey] = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
-								if($invoices[$invoiceKey]['invoiceid'] > $lastInvoiceId) {
-										$lastInvoiceId = $invoices[$invoiceKey]['invoiceid'];
-										$lastInvoice = $invoices[$invoiceKey];
+								$invoice = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
+								$invoices[] = $invoice;
+
+								if($invoice['invoiceid'] > $lastInvoiceId) {
+										$lastInvoiceId = $invoice['invoiceid'];
+										$lastInvoice = $invoice;
 								}	
+
+								if($duplicate == $invoiceKey) {
+										$duplicateInvoice = $invoice;
+								}
 						}
 				}
-				$duplicateInvoice = (array_key_exists($duplicate, $invoices)) ? $invoices[$duplicate] : [];
 
 				return $app->json([
 						'invoices' => $invoices,
@@ -77,7 +83,7 @@ class CreateController extends Controller
 		
 				$app['predis']->set('invoice:'.$invoiceKey, json_encode($_POST));
 				if($app['session']->get('dropbox') !== null) {
-						$app['predis']->lpush('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], [$invoiceKey]);
+						$app['predis']->lpush('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], $invoiceKey);
 				}
 
 				return $app->redirect('/save/' . urlencode($invoiceKey));
