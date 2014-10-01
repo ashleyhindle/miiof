@@ -51,6 +51,8 @@ class CreateController extends Controller
 				$response->headers->setCookie(new Cookie('lastInvoiceKey', $invoiceKey));
 				$response->headers->set('Cache-Control', 'private');
 				$response->headers->set('Content-type', mime_content_type($tmpFilePdf));
+
+				$response->headers->set('Content-Disposition', 'filename="' . basename($tmpFilePdf) . '";');
 				//$response->headers->set('Content-Disposition', 'attachment; filename="' . basename($tmpFilePdf) . '";');
 				$response->headers->set('Content-length', filesize($tmpFilePdf));
 
