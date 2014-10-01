@@ -53,6 +53,7 @@ class CreateController extends Controller
 
 		public function generateAction(Request $request, Application $app)
 		{
+				$contentTypes = $request->getAcceptableContentTypes();
 				$invoiceKey = substr(md5(rand()), 0, 14);
 				$_POST['invoiceKey'] = $invoiceKey;
 
@@ -86,6 +87,12 @@ class CreateController extends Controller
 						$app['predis']->lpush('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], $invoiceKey);
 				}
 
-				return $app->redirect('/save/' . urlencode($invoiceKey));
+				if(in_array('application/json', $contentTypes)) {
+						return $app->json([
+								'pdflocation' => 'https://miiof.smellynose.com/invoice/'.$invoiceKey.'/download'
+						]);
+				} else {
+						return $app->redirect('/save/' . urlencode($invoiceKey));
+				}
 		}
 }
