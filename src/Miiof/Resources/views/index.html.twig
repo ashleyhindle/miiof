@@ -1,4 +1,30 @@
 {% extends "main.html.twig" %}
 {% block content %}
-Hi - <a href='{{ path('miiof_create') }}'>create an invoice</a>
+<script src="https://www.dropbox.com/static/api/dropbox-datastores-1.2-latest.js" type="text/javascript"></script>
+<script type='text/javascript'>
+var client = 0;
+    angular.element(document).ready(function () {
+		client = new Dropbox.Client({key: "8t9mambm9npgo3j"});
+
+		client.authenticate({interactive: false}, function (error) {
+			if (error) {
+				console.log('Authentication error: ' + error);
+			}
+		});
+
+		if (client.isAuthenticated()) {
+				document.getElementById('create_invoice_link_button').style.display = "block";
+				console.log('Definitely authenticated');
+		} else {
+				document.getElementById('dropbox_authenticate_link_button').style.display = "block";
+				console.log('Not authenticated');
+		}
+    });
+</script>
+
+Ello, ello, ello
+<hr>
+<a id='dropbox_authenticate_link_button' style='display:none;' class='btn btn-primary' onclick="client.authenticate();return false;" href='/'>Link with Dropbox</a>
+<a id='create_invoice_link_button' style='display:none;' class='btn btn-primary' href='{{ path('miiof_create') }}'>Create Invoice</a>
+
 {% endblock %}
