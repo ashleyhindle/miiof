@@ -1,27 +1,26 @@
 {% extends "main.html.twig" %}
 
 {% block content %}
-	<div ng-app="miiofApp" ng-controller="CreateCtrl" class='container-fluid' style='width:1100px;'>
+	<div ng-app="miiofApp" ng-controller="CreateCtrl" class='container-fluid'>
 		<form method='POST' action='/generate' class='form'>
-			<input type='submit' class='btn btn-primary' name='submit' value='GENERATE'>
 		    <input name='total' type='hidden' ng-value='invoice.total'>
-				<br>
-
-		<div class='row'>
+			<div class='row'>
+			 <div class='col-xs-10'>
+		      <div class='row'>
 				<div class='col-xs-4'>
 						<h3>Details</h3>
 						<table class="table table-condensed">
 								<tr>
 										<td><strong>Invoice #</strong> <small>(last id: <span>{[{lastInvoiceId}]}</span>)</small></td>
-										<td><input name='invoiceid' placeholder='ID of invoice, get it from last one' ng-model='invoice.invoiceId'></td>
+										<td><input name='invoiceid' placeholder='Invoice ID' ng-model='invoice.invoiceId'></td>
 								</tr>
 								<tr>
 										<th>Issue Date</th>
-											<td><input name='date' placeholder='Date, pickable by selector of some sort?' ng-model='invoice.date'></td>
+											<td><input name='date' placeholder='Issue Date' ng-model='invoice.date'></td>
 								</tr>
 								<tr>
 										<th>Subject</th>
-										<td><input name='subject' placeholder='Why are you sending this? Or month?' ng-model='invoice.subject'></td>
+										<td><input name='subject' placeholder='Reason for invoice' ng-model='invoice.subject'></td>
 								</tr>
 						</table>
 				</div>
@@ -76,29 +75,48 @@
 								</thead>
 								<tbody>
 			<tr ng-repeat="item in invoice.items">
-				<td><a href='' ng-click="removeItem(item)">Remove</a></td>
-				<td><input ng-model="item.description" name="items[{[{ item.itemId  }]}][description]" placeholder='Description of the thing you want to invoice for'></td>
-				<td><input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}][quantity]" placeholder='Quantity of the thing you want to invoice for'></td>
-				<td><input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}][price]" placeholder='Price of the thing you want to invoice for'></td>
+				<td>
+						<button ng-click="removeItem(item)" type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				</td>
+				<td><input ng-model="item.description" name="items[{[{ item.itemId  }]}][description]" placeholder='Description'></td>
+				<td><input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}][quantity]" placeholder='Quantity'></td>
+				<td><input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}][price]" placeholder='Unit Price'></td>
 				<td><span ng-model="item.subtotal">{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</span></td>
 			</tr>
 								</tbody>
 						<tfoot>
 								<tr>
-										<td colspan=3>&nbsp;</td>
+										<td colspan=3><a href='' ng-click="addItem()">Add new invoice item</a></td>
 										<td><h4><span><strong>Amount Due</strong></span></h4></td>
 										<td><h4><strong><span data-prefix>&pound;</span><span>{[{invoice.total|number:2}]}</span></strong></h4></td>
 								</tr>
 						</tfoot>
 						</table>
-							<a href='' ng-click="addItem()">Add new invoice item</a>
 				</div>
+
+				<input type='submit' class='btn btn-primary' name='submit' value='GENERATE'>
+
 				<div class='aside'>
 						<h4><span>Additional Notes</span></h4>
 						<div>
 								<textarea rows="3" class='form-control' name='notes'>{[{invoice.notes}]}</textarea>
 						</div>
 				</div>
+		</div>
+			<div class='col-xs-2' class='previous-invoices'>
+				<h4>Previous Invoices</h4>
+				<div class='no-invoice' ng-if="oldInvoiceCount == 0">
+						<p><strong>No invoices yet!</strong></p>
+						This only works if you <a href='/'>login via Dropbox</a>
+				</div>
+
+				<div class='previous-invoice' ng-repeat="invoice in invoices" style='border-bottom: 1px solid #ddd; padding-bottom: 3px; margin-bottom: 3px;'>
+						<h5>{[{invoice.subject}]}</h5>
+						{[{invoice.date}]}<br>
+						{[{invoice.to.name}]}<br>
+						<strong>&pound; {[{invoice.total}]}</strong>
+				</div>
+			 </div>
 		</div>
 		</form>
 	</div>

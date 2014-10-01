@@ -23,6 +23,7 @@ class DefaultController extends Controller
     public function invoiceAction(Request $request)
     {
 		$invoiceKey = $request->get('invoiceKey');
+		$download = $request->get('download');
 		if(empty($invoiceKey)) {
 				die("Sorry, invalid key, and I don't have time at the minute to add proper error messages because it's past midnight and my laptop is burning my legs");
 		}
@@ -34,7 +35,12 @@ class DefaultController extends Controller
 		$response->headers->set('Cache-Control', 'private');
 		$response->headers->set('Content-type', mime_content_type($tmpFilePdf));
 
-		$response->headers->set('Content-Disposition', 'filename="' . basename($tmpFilePdf) . '";');
+		if($download == 'download') {
+				$response->headers->set('Content-Disposition', 'attachment; filename="' . basename($tmpFilePdf) . '";');
+		} else {
+				$response->headers->set('Content-Disposition', 'filename="' . basename($tmpFilePdf) . '";');
+		}
+
 		$response->headers->set('Content-length', filesize($tmpFilePdf));
 
 		$response->sendHeaders();

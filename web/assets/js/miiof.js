@@ -7,6 +7,7 @@ miiofApp.controller('CreateCtrl', function ($scope, $http) {
 		$scope.lastInvoiceId = 999;
 		$scope.invoiceItemsToAdd = 2;
 		$scope.invoiceItemIdToStart = 920000;
+		$scope.oldInvoiceCount = 0;
 
 		$http({
 				method: 'GET',
@@ -15,14 +16,20 @@ miiofApp.controller('CreateCtrl', function ($scope, $http) {
 				var data = response.data;
 				console.log(data);
 				console.log(data.lastInvoiceId);
-				if(data.lastInvoiceId) {
+				if(data.lastInvoiceId) { // This is only set if they've logged in via DropBox
 						$scope.lastInvoiceId = parseInt(data.lastInvoiceId);
 						$scope.invoice.invoiceId = $scope.lastInvoiceId + 1;
+						$scope.invoice.notes = data.lastInvoice['notes'];
+						$scope.invoice.subject = data.lastInvoice['subject'];
+						$scope.invoice.from = data.lastInvoice['from'];
+						$scope.invoice.to = data.lastInvoice['to'];
+						$scope.invoices = data.invoices;
+						$scope.oldInvoiceCount = data.invoiceCount;
 				}
 		});
 
 		$scope.invoice = {
-				'invoiceId': 1,
+				'invoiceId': $scope.lastInvoiceId + 1,
 				'date': moment().format('MMMM Do YYYY'),
 				'notes': "Bank details go here, maybe payment terms",
 				'currency': {

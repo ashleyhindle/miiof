@@ -24,7 +24,7 @@ class CreateController extends Controller
 
 				$invoices = [];
 
-				$members = $app['predis']->smembers('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId']);
+				$members = $app['predis']->lrange('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], 0, 10);
 				if(!empty($members)) {
 						foreach($members as $invoiceKey) {
 								$invoices[$invoiceKey] = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
@@ -37,7 +37,8 @@ class CreateController extends Controller
 				return $app->json([
 						'invoices' => $invoices,
 						'lastInvoice' => $lastInvoice,
-						'lastInvoiceId' => $lastInvoiceId
+						'lastInvoiceId' => $lastInvoiceId,
+						'oldInvoiceCount' => count($invoices)
 				]);
 		}
 
@@ -71,7 +72,7 @@ class CreateController extends Controller
 		
 				$app['predis']->set('invoice:'.$invoiceKey, json_encode($_POST));
 				if($app['session']->get('dropbox') !== null) {
-						$app['predis']->sadd('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], [$invoiceKey]);
+						$app['predis']->lpush('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId'], [$invoiceKey]);
 				}
 
 				return $app->redirect('/save/' . urlencode($invoiceKey));
