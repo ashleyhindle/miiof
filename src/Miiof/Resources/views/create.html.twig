@@ -80,7 +80,7 @@
 				</td>
 				<td><input ng-model="item.description" name="items[{[{ item.itemId  }]}][description]" placeholder='Description'></td>
 				<td><input min="0" step="any" ng-model="item.quantity" name="items[{[{ item.itemId }]}][quantity]" placeholder='Quantity'></td>
-				<td><input min="0" step="any" ng-model="item.price" type='number' name="items[{[{ item.itemId }]}][price]" placeholder='Unit Price'></td>
+				<td><input min="0" step="any" ng-model="item.price" name="items[{[{ item.itemId }]}][price]" placeholder='Unit Price'></td>
 				<td><span ng-model="item.subtotal">{[{invoice.currency.symbol}]}{[{ item.quantity * item.price | number:2}]}</span></td>
 			</tr>
 								</tbody>
@@ -114,8 +114,9 @@
 						<h5>{[{invoice.subject}]}</h5>
 						{[{invoice.date}]}<br>
 						{[{invoice.to.name}]}<br>
-						<strong>&pound; {[{invoice.total}]}</strong>
-						<a href='/save/{[{invoice.invoiceKey}]}'>Download</a>
+						<strong>&pound;{[{invoice.total}]}</strong><br>
+						<a href='/save/{[{invoice.invoiceKey}]}'>Download</a> &bull;
+						<a href='/create/{[{invoice.invoiceKey}]}'>Duplicate</a>
 				</div>
 			 </div>
 		</div>

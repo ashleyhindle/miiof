@@ -5,7 +5,6 @@ use Flint\Controller\Controller;
 use \Dropbox as dbx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Cookie;
 use Silex\Application;
 
 class CreateController extends Controller
@@ -16,11 +15,12 @@ class CreateController extends Controller
 		}
 
 		// @TODO: THIS REALLY SHOULD NOT BE IN HERE, BUT ONCE IT IS WORKING I WILL TIDY IT UP, I PROMISE
-		public function listInvoicesAction(Application $app)
+		public function listInvoicesAction(Request $request, Application $app)
 		{
 				if($app['session']->get('dropbox') == null) {
 						return $app->json([]);
 				}
+				$duplicate = $request->get('duplicateInvoiceKey');
 
 				$invoices = [];
 
@@ -34,11 +34,14 @@ class CreateController extends Controller
 								}	
 						}
 				}
+				$duplicateInvoice = (array_key_exists($duplicate, $invoices)) ? $invoices[$duplicate] : [];
+
 				return $app->json([
 						'invoices' => $invoices,
 						'lastInvoice' => $lastInvoice,
 						'lastInvoiceId' => $lastInvoiceId,
-						'oldInvoiceCount' => count($invoices)
+						'oldInvoiceCount' => count($invoices),
+						'duplicateInvoice' => $duplicateInvoice
 				]);
 		}
 

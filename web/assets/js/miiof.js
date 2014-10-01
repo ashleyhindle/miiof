@@ -3,7 +3,13 @@ var miiofApp = angular.module('miiofApp', []).config(function($interpolateProvid
     }
 );
 
-miiofApp.controller('CreateCtrl', function ($scope, $http) {
+miiofApp.controller('CreateCtrl', function ($scope, $http, $location) {
+		var pieces = $location.absUrl().split(/[\/]+/);
+		var duplicateInvoiceKey = pieces[pieces.length-1];
+		if(duplicateInvoiceKey == "create" || duplicateInvoiceKey.length != 14) {
+				duplicateInvoiceKey = "";
+		}
+
 		$scope.lastInvoiceId = 999;
 		$scope.invoiceItemsToAdd = 2;
 		$scope.invoiceItemIdToStart = 920000;
@@ -11,7 +17,7 @@ miiofApp.controller('CreateCtrl', function ($scope, $http) {
 
 		$http({
 				method: 'GET',
-				url: '/listinvoices',
+				url: '/listinvoices?duplicateInvoiceKey='+duplicateInvoiceKey,
 		}).then(function(response){
 				var data = response.data;
 				console.log(data);
@@ -25,6 +31,16 @@ miiofApp.controller('CreateCtrl', function ($scope, $http) {
 						$scope.invoice.to = data.lastInvoice['to'];
 						$scope.invoices = data.invoices;
 						$scope.oldInvoiceCount = data.invoiceCount;
+						if(duplicateInvoiceKey.length > 2) {
+								var dup = data.duplicateInvoice;
+								$scope.invoice.invoiceId = dup.invoiceid;
+								$scope.invoice.date = dup.date;
+								$scope.invoice.notes = dup.notes;
+								$scope.invoice.subject = dup.subject;
+								$scope.invoice.from = dup.from;
+								$scope.invoice.to = dup.to;
+								$scope.invoice.items = dup.items;
+						}
 				}
 		});
 
