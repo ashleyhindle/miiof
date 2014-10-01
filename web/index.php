@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+use \Dropbox as dbx;
 
 $app = new \Miiof\Application(__DIR__ . '/..');
 $app->configure(__DIR__ . '/../app/config/config.yml');
@@ -12,7 +13,8 @@ $app->register(new Predis\Silex\ClientServiceProvider(), [
     ],
 ]);
 
-//$accessToken = "needs to be received from oauth majigga and all this and that";
-//$app['dropbox.client'] = new \Dropbox\Client($accessToken, "Miiof");
+$appInfo = dbx\AppInfo::loadFromJsonFile($app['dropbox.key_location']);
+$app['dropbox.appInfo'] = $appInfo;
+
 
 $app->run();
