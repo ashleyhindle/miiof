@@ -3,13 +3,26 @@ var miiofApp = angular.module('miiofApp', []).config(function($interpolateProvid
     }
 );
 
-miiofApp.controller('CreateCtrl', function ($scope) {
+miiofApp.controller('CreateCtrl', function ($scope, $http) {
 		$scope.lastInvoiceId = 999;
 		$scope.invoiceItemsToAdd = 2;
 		$scope.invoiceItemIdToStart = 920000;
 
+		$http({
+				method: 'GET',
+				url: '/listinvoices',
+		}).then(function(response){
+				var data = response.data;
+				console.log(data);
+				console.log(data.lastInvoiceId);
+				if(data.lastInvoiceId) {
+						$scope.lastInvoiceId = parseInt(data.lastInvoiceId);
+						$scope.invoice.invoiceId = $scope.lastInvoiceId + 1;
+				}
+		});
+
 		$scope.invoice = {
-				'invoiceId': $scope.lastInvoiceId + 1,
+				'invoiceId': 1,
 				'date': moment().format('MMMM Do YYYY'),
 				'notes': "Bank details go here, maybe payment terms",
 				'currency': {

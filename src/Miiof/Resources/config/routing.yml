@@ -32,3 +32,7 @@ miiof_dropbox_start:
 miiof_dropbox_finish:
     path: /dropbox/finish
     defaults: { _controller: "Miiof\Controller\DropboxController::finishAction" }
+
+miiof_list_invoices:
+    path: /listinvoices
+    defaults: { _controller: "Miiof\Controller\CreateController::listInvoicesAction" }

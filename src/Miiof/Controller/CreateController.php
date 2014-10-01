@@ -12,22 +12,31 @@ class CreateController extends Controller
 {
 		public function indexAction(Application $app)
 		{
-				$invoices = [];
-				$lastInvoiceId = 999;
+				return $this->render('create.html.twig');
+		}
 
-				if($app['session']->get('dropbox') !== null) {
-						$members = $app['predis']->smembers('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId']);
-						if(!empty($members)) {
-								foreach($members as $invoiceKey) {
-										$invoices[$invoiceKey] = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
-										if($invoices[$invoiceKey]['invoiceid'] > $lastInvoiceId) {
-												$lastInvoiceId = $invoices[$invoiceKey]['invoiceid'];
-										}	
-								}
+		// @TODO: THIS REALLY SHOULD NOT BE IN HERE, BUT ONCE IT IS WORKING I WILL TIDY IT UP, I PROMISE
+		public function listInvoicesAction(Application $app)
+		{
+				if($app['session']->get('dropbox') == null) {
+						return $app->json([]);
+				}
+
+				$invoices = [];
+
+				$members = $app['predis']->smembers('invoices:dropbox:userid:'.$app['session']->get('dropbox')['dropboxUserId']);
+				if(!empty($members)) {
+						foreach($members as $invoiceKey) {
+								$invoices[$invoiceKey] = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
+								if($invoices[$invoiceKey]['invoiceid'] > $lastInvoiceId) {
+										$lastInvoiceId = $invoices[$invoiceKey]['invoiceid'];
+										$lastInvoice = $invoices[$invoiceKey];
+								}	
 						}
 				}
-				return $this->render('create.html.twig', [
+				return $app->json([
 						'invoices' => $invoices,
+						'lastInvoice' => $lastInvoice,
 						'lastInvoiceId' => $lastInvoiceId
 				]);
 		}
