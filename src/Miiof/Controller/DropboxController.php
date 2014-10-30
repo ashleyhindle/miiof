@@ -41,7 +41,7 @@ class DropboxController extends Controller
   $invoice = json_decode($app['predis']->get('invoice:'.$invoiceKey), true);
 
 		$dbxClient = new dbx\Client($app['session']->get('dropbox')['accessToken'], "Miiof");
-		$fp = fopen('/tmp/' . $invoiceKey . '/INVOICE_' . $invoice['invoiceid'] . '.pdf', 'rb');
+		$fp = fopen('/tmp/' . $invoiceKey . '/INVOICE_' . $invoiceKey . '.pdf', 'rb');
 		$md1 = $dbxClient->uploadFile("/INVOICE_{$invoice['invoiceid']}.pdf", dbx\WriteMode::add(), $fp);
 		fclose($fp);
 
